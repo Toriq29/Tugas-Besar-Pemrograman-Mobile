@@ -41,11 +41,10 @@ class DiscoverScreen extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: const BottomNavBar(index: 1),
-        body: ListView(
-          padding: const EdgeInsets.all(20),
+        body: Column(
           children: [
-            // const _DiscoverNews(),
             _CategoryNews(tabs: tabs),
+            
           ],
         ),
       ),
@@ -83,7 +82,7 @@ class _CategoryNews extends StatelessWidget {
               .toList(),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: /*MediaQuery.of(context).size.height*/506,
           child: TabBarView(
             children: tabs
                 .map(
