@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/models/article_model.dart';
-import 'package:tubes/screens/article_screen.dart';
-import 'package:tubes/widget/bottom_nav_bar.dart';
-import 'package:tubes/widget/custom_tag.dart';
-import 'package:tubes/widget/image_container.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tubes/domain/entities/article_model.dart';
+import 'package:tubes/presentation/pages/article_screen.dart';
+import 'package:tubes/presentation/providers/article_provider.dart';
+import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
+import 'package:tubes/presentation/widgets/custom_tag.dart';
+import 'package:tubes/presentation/widgets/image_container.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   static const routeName = '/';
   @override
-  Widget build(BuildContext context) {
-    Article article = Article.articles[0];
-    return Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final articlesAsyncValue = ref.watch(articleProvider);
+    return articlesAsyncValue.when(data: (article){
+      return Scaffold(
       appBar: AppBar(
         title: Text(
           "NewsWaves",
@@ -34,10 +37,11 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: const BottomNavBar(index: 0),
       extendBodyBehindAppBar: true,
       body: ListView(padding: EdgeInsets.zero, children: [
-        _NewsOfTheDay(article: article),
-        _BreakingNews(articles: Article.articles),
+        _NewsOfTheDay(article: article[article.length-1]),
+        _BreakingNews(articles: article),
       ]),
     );
+    }, error: (error, stackTrace) => Text('Error: $error'), loading: () => const Center(child: CircularProgressIndicator(),));
   }
 }
 
@@ -106,7 +110,7 @@ class _BreakingNews extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                            '${DateTime.now().difference(articles[index].createdAt).inHours} hours ago',
+                            /*${DateTime.now().difference(articles[index].createdAt).inHours}*/ ' hours ago',
                             maxLines: 2,
                             style: Theme.of(context).textTheme.bodySmall),
                         Text('by ${articles[index].author}',

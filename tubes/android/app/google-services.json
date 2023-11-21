@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "110697411663",
+    "project_id": "fir-newswaves",
+    "storage_bucket": "fir-newswaves.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110697411663:android:aeedb80fc93b158a0f263a",
+        "android_client_info": {
+          "package_name": "com.example.tubes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_OHh3iFEM2aJ_T1AjDnNUovMxvbKl8yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

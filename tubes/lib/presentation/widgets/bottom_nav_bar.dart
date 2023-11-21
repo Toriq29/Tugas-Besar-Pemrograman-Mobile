@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tubes/screens/discover_screen.dart';
-import 'package:tubes/screens/home_screen.dart';
+import 'package:tubes/presentation/pages/discover_screen.dart';
+import 'package:tubes/presentation/pages/home_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
