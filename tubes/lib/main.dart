@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/firebase_options.dart';
+import 'package:tubes/presentation/pages/login_screen.dart';
+import 'package:tubes/presentation/pages/register_screen.dart';
 import 'presentation/pages/screens.dart';
 
 void main() async {
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
+        LoginScreen.routeName: (context) => LoginScreen(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
         DiscoverScreen.routeName: (context) => const DiscoverScreen(),
         ArticleScreen.routeName: (context) => const ArticleScreen(),

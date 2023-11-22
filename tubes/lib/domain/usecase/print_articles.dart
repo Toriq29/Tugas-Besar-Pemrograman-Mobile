@@ -12,5 +12,4 @@ class PrintArticles implements Usecase<List<Article>>{
     List<Article> articles = await articlesRepository.getArticles();
     return articles;
   }
-
 }

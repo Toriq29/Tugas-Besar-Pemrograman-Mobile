@@ -10,7 +10,7 @@ import 'package:tubes/presentation/widgets/image_container.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/';
+  static const routeName = '/home';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final articlesAsyncValue = ref.watch(articleProvider);
