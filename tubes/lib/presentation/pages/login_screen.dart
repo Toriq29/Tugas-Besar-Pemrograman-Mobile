@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tubes/domain/entities/user.dart';
 import 'package:tubes/presentation/pages/home_screen.dart';
 import 'package:tubes/presentation/pages/register_screen.dart';
+import 'package:tubes/presentation/providers/login_register_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
   static const routeName = '/';
 
-  final TextEditingController email = TextEditingController();
-  final TextEditingController password = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -38,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     hintText: "Masukkan email",
                   ),
-                  controller: email,
+                  controller: emailController,
                 ),
                 const SizedBox(height: 10),
                 TextField(
@@ -50,33 +53,24 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     hintText: "Masukkan password",
                   ),
-                  controller: password,
+                  controller: passwordController,
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
-                    // try {
-                    //   await _auth.createUserWithEmailAndPassword(
-                    //       email: email.text, password: password.text);
+                    await ref
+                        .read(loginRegisterProvider.notifier)
+                        .signInWithEmailAndPassword(
+                            emailController.text, passwordController.text);
 
-                    //   // users.add({
-                    //   //   'email': email.text,
-                    //   //   'password': password.text,
-                    //   // });
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => const ToDoListPage(),
-                    //     ),
-                    //   );
-                    // } catch (e) {
-                    //   print(e);
-                    // }
-                    // email.text = '';
-                    // password.text = '';
-
-                    // ref.read(loginControllerProvider.notifier).login(email.text, password.text);
-                    Navigator.pushNamed(context, HomeScreen.routeName);
+                    Userr? user = ref.read(loginRegisterProvider).user;
+                    if (user != null) {
+                      Navigator.pushNamed(context, HomeScreen.routeName);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Login failed'),
+                      ));
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 40),

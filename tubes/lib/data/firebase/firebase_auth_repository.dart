@@ -17,9 +17,12 @@ class FirebaseAuthRepository implements AuthRepository {
         password: password,
       );
 
+      final DocumentSnapshot documentSnapshot =
+    await users.doc(userCredential.user?.uid).get();
+
       if (userCredential.user != null) {
-        final userData =
-            users.doc(userCredential.user?.uid) as Map<String, dynamic>;
+        final  userData =
+            documentSnapshot.data() as Map<String, dynamic>;
         return Userr(
           uid: userCredential.user?.uid,
           email: userCredential.user?.email,
