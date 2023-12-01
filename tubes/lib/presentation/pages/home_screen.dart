@@ -18,24 +18,6 @@ class HomeScreen extends ConsumerWidget {
     final articlesAsyncValue = ref.watch(articleProvider);
     return articlesAsyncValue.when(data: (article){
       return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "NewsWaves",
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall!
-              .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.newspaper,
-            color: Colors.white,
-          ),
-        ),
-      ),
       bottomNavigationBar: const BottomNavBar(index: 0),
       extendBodyBehindAppBar: true,
       body: ListView(padding: EdgeInsets.zero, children: [
@@ -56,7 +38,7 @@ class _BreakingNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(3, 20, 3, 20),
       child: Column(
         children: [
           Row(

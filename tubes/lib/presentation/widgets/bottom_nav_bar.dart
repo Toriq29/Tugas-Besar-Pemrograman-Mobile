@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/presentation/pages/discover_screen.dart';
 import 'package:tubes/presentation/pages/home_screen.dart';
-import 'package:tubes/presentation/pages/login_screen.dart';
-import 'package:tubes/presentation/providers/login_register_provider.dart';
-
+import 'package:tubes/presentation/pages/profle_screen.dart';
 class BottomNavBar extends ConsumerWidget {
   const BottomNavBar({
     super.key,
@@ -45,8 +43,7 @@ class BottomNavBar extends ConsumerWidget {
                 margin: const EdgeInsets.only(right: 50),
                 child: IconButton( 
                   onPressed: () {
-                    ref.read(loginRegisterProvider.notifier).signOut();
-                    Navigator.pushNamed(context, LoginScreen.routeName);
+                    Navigator.pushNamed(context, ProfileScreen.routeName);
                   }, 
                   icon: const Icon(Icons.person))), 
               label: 'Profile'),

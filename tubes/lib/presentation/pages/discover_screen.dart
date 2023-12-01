@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/presentation/pages/article_screen.dart';
 import 'package:tubes/presentation/providers/article_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
+import 'package:tubes/presentation/widgets/custom_header.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
 
 class DiscoverScreen extends StatelessWidget {
@@ -23,24 +24,7 @@ class DiscoverScreen extends StatelessWidget {
       initialIndex: 0,
       length: tabs.length,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "NewsWaves",
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.newspaper,
-              color: Colors.black,
-            ),
-          ),
-        ),
+        appBar: const CustomHeader(),
         bottomNavigationBar: const BottomNavBar(index: 1),
         body: Column(
           children: [
