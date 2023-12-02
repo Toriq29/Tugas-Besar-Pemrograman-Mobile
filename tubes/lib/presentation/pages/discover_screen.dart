@@ -68,7 +68,7 @@ class _CategoryNews extends ConsumerWidget {
                     .toList(),
               ),
               SizedBox(
-                height: /*MediaQuery.of(context).size.height*/ 506,
+                height: MediaQuery.of(context).size.height * 0.7,
                 child: TabBarView(
                   children: tabs
                       .map(

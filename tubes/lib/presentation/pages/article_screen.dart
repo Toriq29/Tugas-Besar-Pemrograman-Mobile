@@ -53,6 +53,7 @@ class ArticleScreen extends StatelessWidget {
                         SizedBox(width: 10),
                       ],
                     ),
+                    const SizedBox(width: 10),
                     CustomTag(
                       backgroundColor: Colors.grey.shade200,
                       children: [
@@ -92,7 +93,7 @@ class _NewsHeadline extends StatelessWidget {
     return Stack(
       children: [
         ImageContainer(
-          height: MediaQuery.of(context).size.height * 0.45,
+          height: MediaQuery.of(context).size.height * 0.5,
           width: double.infinity,
           imageUrl: article.imageUrl,
           child: Padding(

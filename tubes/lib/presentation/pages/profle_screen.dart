@@ -17,8 +17,15 @@ class ProfileScreen extends ConsumerWidget {
       bottomNavigationBar: const BottomNavBar(index: 2),
       body: Column(
         children: [
-          Center(
-            child: Text(ref.read(loginRegisterProvider).user!.name),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 50,
+              ),
+              const SizedBox(width: 30),
+              Text(ref.read(loginRegisterProvider).user!.name, style: const TextStyle(fontSize: 20)),
+            ],
           ),
           Container(
             padding: const EdgeInsets.all(10),
