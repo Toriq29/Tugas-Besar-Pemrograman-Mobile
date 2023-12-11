@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tubes/presentation/pages/edit_profile.dart';
+// import 'package:tubes/presentation/pages/edit_profile.dart';
 import 'package:tubes/presentation/pages/login_screen.dart';
 import 'package:tubes/presentation/providers/login_register_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
@@ -24,7 +26,23 @@ class ProfileScreen extends ConsumerWidget {
                 radius: 50,
               ),
               const SizedBox(width: 30),
-              Text(ref.read(loginRegisterProvider).user!.name, style: const TextStyle(fontSize: 20)),
+              Column(
+                children: [
+                  Text(ref.read(loginRegisterProvider).user!.name,
+                      style: const TextStyle(fontSize: 20)),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, EditProfileScreen.routeName);
+                    },
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                    child: const Text(
+                      "Update Profile",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
           Container(

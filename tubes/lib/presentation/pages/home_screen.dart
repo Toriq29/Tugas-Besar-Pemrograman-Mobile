@@ -38,7 +38,7 @@ class _BreakingNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(3, 20, 3, 20),
+      padding: const EdgeInsets.fromLTRB(15, 20, 10, 20),
       child: Column(
         children: [
           Row(
