@@ -55,6 +55,21 @@ class EditProfileScreen extends ConsumerWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
+
+                ElevatedButton(
+                  onPressed: () async {
+                    await ref.read(loginRegisterProvider.notifier).uploadProfile();
+
+                    Navigator.pushNamed(context, ProfileScreen.routeName);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 40),
+                      backgroundColor: Colors.black),
+                  child: const Text(
+                    "Edit Photo Profile",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
           ),

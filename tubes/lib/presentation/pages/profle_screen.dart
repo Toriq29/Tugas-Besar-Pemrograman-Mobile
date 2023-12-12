@@ -22,9 +22,17 @@ class ProfileScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 50,
-              ),
+              if (ref.read(loginRegisterProvider).user!.photoUrl != "")
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                      ref.read(loginRegisterProvider).user!.photoUrl),
+                )
+              else
+                const CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage("lib/data/images/profile.png"),
+                ),
               const SizedBox(width: 30),
               Column(
                 children: [

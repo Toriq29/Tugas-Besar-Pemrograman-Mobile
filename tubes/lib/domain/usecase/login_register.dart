@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/data/firebase/firebase_auth_repository.dart';
 import 'package:tubes/data/repositories/auth_repository.dart';
@@ -40,11 +38,8 @@ class LoginAndRegister extends StateNotifier<AuthState> {
     state = AuthState(user: user);
   }
 
-  Future<Void> uploadProfile() async {
-    
-    final Userr? updateProfile = await _authRepository.uploadProfilePicture(state.user!);
-
-    state = AuthState(user: updateProfile);
-    throw Exception('An error occurred');
+  Future<void> uploadProfile() async {
+    final Userr? user = await _authRepository.uploadProfilePicture();
+    state = AuthState(user: user);
   }
 }
