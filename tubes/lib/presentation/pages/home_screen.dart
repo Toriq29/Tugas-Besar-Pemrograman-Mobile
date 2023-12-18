@@ -10,31 +10,41 @@ import 'package:tubes/presentation/widgets/image_container.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
-  
+
   static const routeName = '/home';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     print(ref.read(loginRegisterProvider).user?.name);
     final articlesAsyncValue = ref.watch(articleProvider);
-    return articlesAsyncValue.when(data: (article){
-      return Scaffold(
-      bottomNavigationBar: const BottomNavBar(index: 0),
-      extendBodyBehindAppBar: true,
-      body: ListView(padding: EdgeInsets.zero, children: [
-        _NewsOfTheDay(article: article[article.length-1]),
-        _BreakingNews(articles: article),
-      ]),
-    );
-    }, error: (error, stackTrace) => Text('Error: $error'), loading: () => const Center(child: CircularProgressIndicator(),));
+    return articlesAsyncValue.when(
+        data: (article) {
+          return Scaffold(
+            bottomNavigationBar: const BottomNavBar(index: 0),
+            extendBodyBehindAppBar: true,
+            body: ListView(padding: EdgeInsets.zero, children: [
+              _NewsOfTheDay(article: article[article.length - 1]),
+              _BreakingNews(articles: article),
+            ]),
+          );
+        },
+        error: (error, stackTrace) => Text('Error: $error'),
+        loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ));
   }
 }
 
-class _BreakingNews extends StatelessWidget {
+class _BreakingNews extends ConsumerStatefulWidget {
   const _BreakingNews({
     required this.articles,
   });
 
   final List<Article> articles;
+  @override
+  ConsumerState<_BreakingNews> createState() => __BreakingNewsState();
+}
+
+class __BreakingNewsState extends ConsumerState<_BreakingNews> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -62,7 +72,7 @@ class _BreakingNews extends StatelessWidget {
             height: 250,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: articles.length,
+              itemCount: widget.articles.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: MediaQuery.of(context).size.width * 0.5,
@@ -72,19 +82,26 @@ class _BreakingNews extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         ArticleScreen.routeName,
-                        arguments: articles[index],
+                        arguments: widget.articles[index],
                       );
+                      ref.read(
+                          incrementViewProvider(widget.articles[index].id));
+                      widget.articles[index].view += 1;
+
+                      setState(() {
+                        
+                      });
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ImageContainer(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          imageUrl: articles[index].imageUrl,
+                          imageUrl: widget.articles[index].imageUrl,
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          articles[index].title,
+                          widget.articles[index].title,
                           maxLines: 2,
                           style: Theme.of(context)
                               .textTheme
@@ -93,11 +110,17 @@ class _BreakingNews extends StatelessWidget {
                                   fontWeight: FontWeight.bold, height: 1.5),
                         ),
                         const SizedBox(height: 5),
-                        Text(
-                            /*${DateTime.now().difference(articles[index].createdAt).inHours}*/ ' hours ago',
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text('by ${articles[index].author}',
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.visibility,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 5),
+                            Text('${widget.articles[index].view} views'),
+                          ],
+                        ),
+                        Text('by ${widget.articles[index].author}',
                             maxLines: 2,
                             style: Theme.of(context).textTheme.bodySmall),
                       ],

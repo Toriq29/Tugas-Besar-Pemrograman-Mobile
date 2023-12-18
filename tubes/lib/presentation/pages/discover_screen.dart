@@ -123,25 +123,15 @@ class __CategoryNewsState extends ConsumerState<_CategoryNews> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                           ),
-                                          const SizedBox(height: 10),
+                                          const SizedBox(height: 5),
                                           Row(
                                             children: [
-                                              const Icon(
-                                                Icons.schedule,
-                                                size: 18,
-                                              ),
-                                              const SizedBox(width: 5),
-                                              Text(
-                                                  /*${DateTime.now().difference(articles[index].createdAt).inHours}*/ ' hours ago',
-                                                  maxLines: 2,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall),
-                                              const SizedBox(width: 20),
+                                              
                                               const Icon(
                                                 Icons.visibility,
                                                 size: 18,
                                               ),
+                                              const SizedBox(width: 5),
                                               Text(
                                                   '${articles[index].view} views')
                                             ],

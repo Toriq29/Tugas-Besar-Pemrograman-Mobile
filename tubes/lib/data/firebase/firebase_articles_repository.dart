@@ -14,7 +14,7 @@ class FirebaseArticlesRepository implements ArticlesRepository{
     try {
       QuerySnapshot querySnapshot = await articles.get();
       for (var doc in querySnapshot.docs) { 
-        listArticles.add(Article(id: doc.id, title: doc['title'], body: doc['body'], author: doc['author'], category: doc['category'], imageUrl: doc['imageUrl'], view: doc['view'], createdAt: doc['createdAt']));
+        listArticles.add(Article(id: doc.id, title: doc['title'], body: doc['body'], author: doc['author'], category: doc['category'], imageUrl: doc['imageUrl'], view: doc['view']));
       }
       print('!!!!!!!!!!!!!!!!!!!!!!!$listArticles');
     } catch (e) {

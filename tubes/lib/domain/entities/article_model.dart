@@ -1,5 +1,4 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Article{
   final String id;
@@ -9,7 +8,6 @@ class Article{
   final String category;
   final String imageUrl;
   int view;
-  final Timestamp createdAt;
 
   Article({
     required this.id,
@@ -19,6 +17,5 @@ class Article{
     required this.category,
     required this.imageUrl,
     required this.view,
-    required this.createdAt,
   });
 }
