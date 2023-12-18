@@ -10,6 +10,7 @@ class ArticleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final article = ModalRoute.of(context)!.settings.arguments as Article;
+    print(article.id);
     return Scaffold(
       // backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,

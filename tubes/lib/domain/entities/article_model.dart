@@ -8,10 +8,10 @@ class Article{
   final String author;
   final String category;
   final String imageUrl;
-  final int view;
+  int view;
   final Timestamp createdAt;
 
-  const Article({
+  Article({
     required this.id,
     required this.title,
     required this.body,

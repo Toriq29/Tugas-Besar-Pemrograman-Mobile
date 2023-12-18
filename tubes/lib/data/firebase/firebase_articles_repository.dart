@@ -3,9 +3,12 @@ import 'package:tubes/data/repositories/articles_repository.dart';
 import 'package:tubes/domain/entities/article_model.dart';
 
 class FirebaseArticlesRepository implements ArticlesRepository{
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  
+
   @override
   Future<List<Article>> getArticles() async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
     CollectionReference articles = firestore.collection("articles");
     List<Article> listArticles = [];
     try {
@@ -19,5 +22,21 @@ class FirebaseArticlesRepository implements ArticlesRepository{
     }
     return listArticles;
   }
+  
+  @override
+  Future<void> incrementViews(String id) async {
+    CollectionReference articles = firestore.collection("articles");
+
+    final DocumentSnapshot documentSnapshot = await articles.doc(id).get();
+    final article = documentSnapshot.data() as Map<String, dynamic>;
+
+    int inc = article['view'] + 1;
+    print(inc);
+    
+    await articles.doc(id).update({"view": inc});
+
+  }
+
+
 
 }

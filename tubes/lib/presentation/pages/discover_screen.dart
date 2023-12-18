@@ -36,7 +36,7 @@ class DiscoverScreen extends StatelessWidget {
   }
 }
 
-class _CategoryNews extends ConsumerWidget {
+class _CategoryNews extends ConsumerStatefulWidget {
   const _CategoryNews({
     required this.tabs,
   });
@@ -44,7 +44,12 @@ class _CategoryNews extends ConsumerWidget {
   final List<String> tabs;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_CategoryNews> createState() => __CategoryNewsState();
+}
+
+class __CategoryNewsState extends ConsumerState<_CategoryNews> {
+  @override
+  Widget build(BuildContext context) {
     final articlesAsyncValue = ref.watch(articleProvider);
     return articlesAsyncValue.when(
         data: (articles) {
@@ -53,7 +58,7 @@ class _CategoryNews extends ConsumerWidget {
               TabBar(
                 isScrollable: true,
                 indicatorColor: Colors.black,
-                tabs: tabs
+                tabs: widget.tabs
                     .map(
                       (e) => Tab(
                         icon: Text(
@@ -70,7 +75,7 @@ class _CategoryNews extends ConsumerWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
                 child: TabBarView(
-                  children: tabs
+                  children: widget.tabs
                       .map(
                         (e) => ListView.builder(
                           itemCount: articles.length,
@@ -78,12 +83,19 @@ class _CategoryNews extends ConsumerWidget {
                           itemBuilder: ((context, index) {
                             if (e == articles[index].category) {
                               return InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   Navigator.pushNamed(
                                     context,
                                     ArticleScreen.routeName,
                                     arguments: articles[index],
                                   );
+
+                                  ref.read(incrementViewProvider(
+                                      articles[index].id));
+
+                                  setState(() {
+                                    articles[index].view += 1;
+                                  });
                                 },
                                 child: Row(
                                   children: [
@@ -120,7 +132,7 @@ class _CategoryNews extends ConsumerWidget {
                                               ),
                                               const SizedBox(width: 5),
                                               Text(
-                                                  /*${DateTime.now().difference(articles[index].createdAt).inHours}*/' hours ago',
+                                                  /*${DateTime.now().difference(articles[index].createdAt).inHours}*/ ' hours ago',
                                                   maxLines: 2,
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -153,7 +165,9 @@ class _CategoryNews extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) => Text('Error: $error'),
-        loading: () => const Center(child: CircularProgressIndicator(),));
+        loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ));
   }
 }
 
