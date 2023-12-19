@@ -35,7 +35,7 @@ class BottomNavBar extends ConsumerWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, DiscoverScreen.routeName);
                 }, 
-                icon: const Icon(Icons.search)), 
+                icon: const Icon(Icons.newspaper)), 
               label: 'Search'),
 
          BottomNavigationBarItem( 

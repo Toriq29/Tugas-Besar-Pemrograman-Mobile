@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tubes/domain/entities/user.dart';
 import 'package:tubes/presentation/pages/home_screen.dart';
 import 'package:tubes/presentation/providers/login_register_provider.dart';
 
@@ -69,12 +70,59 @@ class RegisterScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
-                    await ref
-                        .read(loginRegisterProvider.notifier)
-                        .createUserWithEmailAndPassword(nameController.text,
-                            emailController.text, passwordController.text);
-
-                    Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+                    // ignore: unnecessary_null_comparison
+                    if (nameController != null &&emailController != null && passwordController != null) {
+                      String regName = nameController.text.trim();
+                      String regEmail = emailController.text.trim();
+                      String regPass = passwordController.text.trim();
+                      if (regName.isNotEmpty || regEmail.isNotEmpty || regPass.isNotEmpty) {
+                        if (regName.isNotEmpty) {
+                          if (regEmail.isNotEmpty) {
+                            if (regPass.isNotEmpty) {
+                              await ref
+                                  .read(loginRegisterProvider.notifier)
+                                  .createUserWithEmailAndPassword(
+                                      nameController.text,
+                                      emailController.text,
+                                      passwordController.text);
+                              Userr? user =
+                                  ref.read(loginRegisterProvider).user;
+                              if (user != null) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushReplacementNamed(
+                                    context, HomeScreen.routeName);
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Email tidak sesuai'),
+                                ));
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Silahkan masukkan password'),
+                              ));
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Silahkan masukkan email'),
+                            ));
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Silahkan masukkan nama'),
+                          ));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              'Silahkan masukkan nama, email, dan password'),
+                        ));
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 40),

@@ -58,18 +58,47 @@ class LoginScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
-                    await ref
-                        .read(loginRegisterProvider.notifier)
-                        .signInWithEmailAndPassword(
-                            emailController.text, passwordController.text);
+                    // ignore: unnecessary_null_comparison
+                    if (emailController != null && passwordController != null) {
+                      String loginEmail = emailController.text.trim();
+                      String loginPass = passwordController.text.trim();
+                      if (loginEmail.isNotEmpty || loginPass.isNotEmpty) {
+                        if (loginEmail.isNotEmpty) {
+                          if (loginPass.isNotEmpty) {
+                            await ref
+                                .read(loginRegisterProvider.notifier)
+                                .signInWithEmailAndPassword(
+                                    emailController.text,
+                                    passwordController.text);
 
-                    Userr? user = ref.read(loginRegisterProvider).user;
-                    if (user != null) {
-                      Navigator.pushNamed(context, HomeScreen.routeName);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Login failed'),
-                      ));
+                            Userr? user = ref.read(loginRegisterProvider).user;
+                            if (user != null) {
+                              Navigator.pushNamed(
+                                  context, HomeScreen.routeName);
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Email atau password salah'),
+                              ));
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Silahkan masukkan password'),
+                            ));
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Silahkan masukkan email'),
+                          ));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text('Silahkan masukkan email dan password'),
+                        ));
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(

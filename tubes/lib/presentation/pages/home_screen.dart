@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/domain/entities/article_model.dart';
 import 'package:tubes/presentation/pages/article_screen.dart';
 import 'package:tubes/presentation/providers/article_provider.dart';
-import 'package:tubes/presentation/providers/login_register_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
 import 'package:tubes/presentation/widgets/custom_tag.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
@@ -14,16 +13,16 @@ class HomeScreen extends ConsumerWidget {
   static const routeName = '/home';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(ref.read(loginRegisterProvider).user?.name);
     final articlesAsyncValue = ref.watch(articleProvider);
     return articlesAsyncValue.when(
-        data: (article) {
+        data: (articles) {
+          
           return Scaffold(
             bottomNavigationBar: const BottomNavBar(index: 0),
             extendBodyBehindAppBar: true,
             body: ListView(padding: EdgeInsets.zero, children: [
-              _NewsOfTheDay(article: article[article.length - 1]),
-              _BreakingNews(articles: article),
+              _NewsOfTheDay(article: articles[0]),
+              _BreakingNews(articles: ref.read(breakingNewsProvider(articles))),
             ]),
           );
         },

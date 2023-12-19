@@ -11,16 +11,21 @@ class FirebaseArticlesRepository implements ArticlesRepository{
 
     CollectionReference articles = firestore.collection("articles");
     List<Article> listArticles = [];
+    List<Article> listArticlesSwap = [];
     try {
       QuerySnapshot querySnapshot = await articles.get();
       for (var doc in querySnapshot.docs) { 
         listArticles.add(Article(id: doc.id, title: doc['title'], body: doc['body'], author: doc['author'], category: doc['category'], imageUrl: doc['imageUrl'], view: doc['view']));
       }
-      print('!!!!!!!!!!!!!!!!!!!!!!!$listArticles');
+
+      for (var i = listArticles.length-1 ; i >= 0  ; i--) {
+        listArticlesSwap.add(listArticles[i]);
+      }
+      
     } catch (e) {
       print('Error fetching data: $e');
     }
-    return listArticles;
+    return listArticlesSwap;
   }
   
   @override
@@ -31,12 +36,9 @@ class FirebaseArticlesRepository implements ArticlesRepository{
     final article = documentSnapshot.data() as Map<String, dynamic>;
 
     int inc = article['view'] + 1;
-    print(inc);
     
     await articles.doc(id).update({"view": inc});
 
   }
-
-
 
 }

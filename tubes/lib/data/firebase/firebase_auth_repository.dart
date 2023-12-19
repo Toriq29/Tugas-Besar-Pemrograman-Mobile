@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tubes/domain/entities/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,28 +104,35 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<Userr?> uploadProfilePicture() async {
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    ImageCropper imageCropper = ImageCropper();
+
+    CroppedFile? croppedFile = await imageCropper.cropImage(
+      sourcePath: file!.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      maxHeight: 512,
+      maxWidth: 512,
+    );
+
     User? user = _firebaseAuth.currentUser;
 
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference referenceDirImage = referenceRoot.child('profile');
     Reference referenceImageToUpload = referenceDirImage.child(user!.uid);
 
-    // Upload the image to Firebase Storage
-    await referenceImageToUpload.putFile(File(file!.path));
+    await referenceImageToUpload.putFile(File(croppedFile!.path));
 
-    // Get the download URL for the uploaded image
     final photoUrl = await referenceImageToUpload.getDownloadURL();
 
-    // Update the user document with the new photoUrl
     await users.doc(user.uid).update({"photoUrl": photoUrl});
 
     final DocumentSnapshot documentSnapshot = await users.doc(user.uid).get();
     final userData = documentSnapshot.data() as Map<String, dynamic>;
 
-    // Return the updated user object
+    
     return Userr(
       uid: user.uid,
-      name: userData['name'], // Make sure userData is defined
+      name: userData['name'],
       email: user.email,
       photoUrl: userData['photoUrl'],
     );
