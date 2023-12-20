@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/domain/entities/article_model.dart';
+import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
 
-class ArticleScreen extends StatelessWidget {
+class ArticleScreen extends ConsumerWidget {
   const ArticleScreen({Key? key}) : super(key: key);
 
   static const routeName = '/article';
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final article = ModalRoute.of(context)!.settings.arguments as Article;
-    print(article.id);
+    final appThemeState = ref.watch(appThemeStateNotifier);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: ListView(
@@ -23,7 +25,7 @@ class ArticleScreen extends StatelessWidget {
               article.title,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black,
                     height: 1.25,
                   ),
             ),
@@ -38,12 +40,12 @@ class ArticleScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
-                      .copyWith(color: Colors.black),
+                      .copyWith(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   article.body,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),
                 )
               ],
             ),

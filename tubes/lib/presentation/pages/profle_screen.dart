@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/presentation/pages/edit_profile.dart';
-// import 'package:tubes/presentation/pages/edit_profile.dart';
 import 'package:tubes/presentation/pages/login_screen.dart';
 import 'package:tubes/presentation/providers/login_register_provider.dart';
 import 'package:tubes/presentation/providers/theme_provider.dart';
@@ -39,16 +38,16 @@ class ProfileScreen extends ConsumerWidget {
               Column(
                 children: [
                   Text(ref.read(loginRegisterProvider).user!.name,
-                      style: const TextStyle(fontSize: 20)),
+                      style: TextStyle(fontSize: 20, color:appThemeState.isDarkModeEnabled ? Colors.white : Colors.black )),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, EditProfileScreen.routeName);
                     },
                     style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                    child: const Text(
+                        ElevatedButton.styleFrom(backgroundColor: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),
+                    child: Text(
                       "Update Profile",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.black : Colors.white),
                     ),
                   )
                 ],
@@ -58,7 +57,6 @@ class ProfileScreen extends ConsumerWidget {
           Row(
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 10),
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
@@ -67,22 +65,19 @@ class ProfileScreen extends ConsumerWidget {
                         ref.read(loginRegisterProvider.notifier).signOut();
                         Navigator.pushNamed(context, LoginScreen.routeName);
                       },
-                      child: const Row(
+                      child:  Row(
                         children: [
-                          Image(
-                            image: AssetImage("lib/data/images/logout.png"),
-                            width: 30,
-                            height: 30,
-                          ),
-                          SizedBox(width: 15),
-                          Text("Dark Mode")
+                          IconButton(onPressed: () {}, icon: const Icon(Icons.dark_mode)),
+                          const SizedBox(width: 5),
+                          Text("Dark Mode",
+                          style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),)
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.37),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.35),
               Switch(
                   value: appThemeState.isDarkModeEnabled,
                   onChanged: (enabled) {
@@ -94,7 +89,7 @@ class ProfileScreen extends ConsumerWidget {
                   }),
             ],
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.48),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.43),
           Container(
             margin: const EdgeInsets.only(left: 10),
             padding: const EdgeInsets.all(10),
@@ -105,15 +100,11 @@ class ProfileScreen extends ConsumerWidget {
                     ref.read(loginRegisterProvider.notifier).signOut();
                     Navigator.pushNamed(context, LoginScreen.routeName);
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Image(
-                        image: AssetImage("lib/data/images/logout.png"),
-                        width: 30,
-                        height: 30,
-                      ),
-                      SizedBox(width: 15),
-                      Text("Log Out")
+                      IconButton(onPressed: () {}, icon: const Icon(Icons.logout)),
+                      const SizedBox(width: 5),
+                      Text("Log Out", style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),)
                     ],
                   ),
                 ),

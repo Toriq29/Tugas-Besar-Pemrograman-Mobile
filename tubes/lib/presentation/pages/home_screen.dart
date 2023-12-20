@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/domain/entities/article_model.dart';
 import 'package:tubes/presentation/pages/article_screen.dart';
 import 'package:tubes/presentation/providers/article_provider.dart';
+import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
 import 'package:tubes/presentation/widgets/custom_tag.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
@@ -16,7 +17,6 @@ class HomeScreen extends ConsumerWidget {
     final articlesAsyncValue = ref.watch(articleProvider);
     return articlesAsyncValue.when(
         data: (articles) {
-          
           return Scaffold(
             bottomNavigationBar: const BottomNavBar(index: 0),
             extendBodyBehindAppBar: true,
@@ -46,8 +46,9 @@ class _BreakingNews extends ConsumerStatefulWidget {
 class __BreakingNewsState extends ConsumerState<_BreakingNews> {
   @override
   Widget build(BuildContext context) {
+    final appThemeState = ref.watch(appThemeStateNotifier);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 20, 10, 20),
+      padding: const EdgeInsets.fromLTRB(5, 20, 0, 20),
       child: Column(
         children: [
           Row(
@@ -55,14 +56,18 @@ class __BreakingNewsState extends ConsumerState<_BreakingNews> {
             children: [
               Text(
                 "Berita Terkini",
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: appThemeState.isDarkModeEnabled
+                        ? Colors.white
+                        : Colors.black),
               ),
               Text(
                 "Selengkapnya",
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: appThemeState.isDarkModeEnabled
+                        ? Colors.white
+                        : Colors.black),
               ),
             ],
           ),
@@ -87,9 +92,7 @@ class __BreakingNewsState extends ConsumerState<_BreakingNews> {
                           incrementViewProvider(widget.articles[index].id));
                       widget.articles[index].view += 1;
 
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,22 +109,35 @@ class __BreakingNewsState extends ConsumerState<_BreakingNews> {
                               .textTheme
                               .bodyLarge!
                               .copyWith(
-                                  fontWeight: FontWeight.bold, height: 1.5),
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.5,
+                                  color: appThemeState.isDarkModeEnabled
+                                      ? Colors.white
+                                      : Colors.black),
                         ),
                         const SizedBox(height: 5),
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.visibility,
                               size: 18,
+                              color: appThemeState.isDarkModeEnabled
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                             const SizedBox(width: 5),
-                            Text('${widget.articles[index].view} views'),
+                            Text(
+                              '${widget.articles[index].view} views',
+                              style: TextStyle(
+                                  color: appThemeState.isDarkModeEnabled
+                                      ? Colors.white
+                                      : Colors.black),
+                            ),
                           ],
                         ),
                         Text('by ${widget.articles[index].author}',
                             maxLines: 2,
-                            style: Theme.of(context).textTheme.bodySmall),
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black)),
                       ],
                     ),
                   ),

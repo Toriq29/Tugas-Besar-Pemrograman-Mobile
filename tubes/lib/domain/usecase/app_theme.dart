@@ -8,9 +8,10 @@ class AppTheme{
       iconTheme: IconThemeData(
         color: Colors.white
       )
+      
     ),
     textTheme: const TextTheme(
-      bodyText2: TextStyle(
+      bodyText1: TextStyle(
         color: Colors.black,
       )
     )
@@ -25,7 +26,7 @@ class AppTheme{
       )
     ),
     textTheme: const TextTheme(
-      bodyText2: TextStyle(
+      bodyText1: TextStyle(
         color: Colors.white,
       )
     )

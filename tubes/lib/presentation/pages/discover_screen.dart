@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/presentation/pages/article_screen.dart';
 import 'package:tubes/presentation/providers/article_provider.dart';
+import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
 import 'package:tubes/presentation/widgets/custom_header.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
@@ -51,13 +52,14 @@ class __CategoryNewsState extends ConsumerState<_CategoryNews> {
   @override
   Widget build(BuildContext context) {
     final articlesAsyncValue = ref.watch(articleProvider);
+    final appThemeState = ref.watch(appThemeStateNotifier);
     return articlesAsyncValue.when(
         data: (articles) {
           return Column(
             children: [
               TabBar(
                 isScrollable: true,
-                indicatorColor: Colors.black,
+                indicatorColor: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black,
                 tabs: widget.tabs
                     .map(
                       (e) => Tab(
@@ -66,7 +68,7 @@ class __CategoryNewsState extends ConsumerState<_CategoryNews> {
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .copyWith(fontWeight: FontWeight.bold, color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),
                         ),
                       ),
                     )
@@ -121,19 +123,20 @@ class __CategoryNewsState extends ConsumerState<_CategoryNews> {
                                                 .bodyLarge!
                                                 .copyWith(
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                        FontWeight.bold, color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),
                                           ),
                                           const SizedBox(height: 5),
                                           Row(
                                             children: [
                                               
-                                              const Icon(
+                                              Icon(
                                                 Icons.visibility,
                                                 size: 18,
+                                                color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black,
                                               ),
                                               const SizedBox(width: 5),
                                               Text(
-                                                  '${articles[index].view} views')
+                                                  '${articles[index].view} views', style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),)
                                             ],
                                           )
                                         ],
