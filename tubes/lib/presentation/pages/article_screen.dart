@@ -71,6 +71,7 @@ class _NewsHeadline extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.5,
           width: double.infinity,
           imageUrl: article.imageUrl,
+          borderRadius: 0,
         ),
         Positioned(
           top: 0,

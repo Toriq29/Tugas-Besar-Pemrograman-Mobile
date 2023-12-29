@@ -48,97 +48,112 @@ class __BreakingNewsState extends ConsumerState<_BreakingNews> {
   Widget build(BuildContext context) {
     final appThemeState = ref.watch(appThemeStateNotifier);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(5, 20, 0, 20),
+      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                "Berita Terkini",
-                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: appThemeState.isDarkModeEnabled
-                        ? Colors.white
-                        : Colors.black),
-              ),
-              Text(
-                "Selengkapnya",
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: appThemeState.isDarkModeEnabled
-                        ? Colors.white
-                        : Colors.black),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Berita Terkini",
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: appThemeState.isDarkModeEnabled
+                          ? Colors.white
+                          : Colors.black),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.23,
+                ),
+                Text(
+                  "Selengkapnya",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: appThemeState.isDarkModeEnabled
+                          ? Colors.white
+                          : Colors.black),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           SizedBox(
             height: 250,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: widget.articles.length,
               itemBuilder: (context, index) {
-                return Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  margin: const EdgeInsets.only(right: 10),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        ArticleScreen.routeName,
-                        arguments: widget.articles[index],
-                      );
-                      ref.read(
-                          incrementViewProvider(widget.articles[index].id));
-                      widget.articles[index].view += 1;
+                return Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          ArticleScreen.routeName,
+                          arguments: widget.articles[index],
+                        );
+                        ref.read(
+                            incrementViewProvider(widget.articles[index].id));
+                        widget.articles[index].view += 1;
 
-                      setState(() {});
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ImageContainer(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          imageUrl: widget.articles[index].imageUrl,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          widget.articles[index].title,
-                          maxLines: 2,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.5,
-                                  color: appThemeState.isDarkModeEnabled
-                                      ? Colors.white
-                                      : Colors.black),
-                        ),
-                        const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.visibility,
-                              size: 18,
-                              color: appThemeState.isDarkModeEnabled
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              '${widget.articles[index].view} views',
-                              style: TextStyle(
-                                  color: appThemeState.isDarkModeEnabled
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ],
-                        ),
-                        Text('by ${widget.articles[index].author}',
+                        setState(() {});
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ImageContainer(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            imageUrl: widget.articles[index].imageUrl,
+                            borderRadius: 10,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.articles[index].title,
                             maxLines: 2,
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black)),
-                      ],
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.5,
+                                    color: appThemeState.isDarkModeEnabled
+                                        ? Colors.white
+                                        : Colors.black),
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.visibility,
+                                size: 18,
+                                color: appThemeState.isDarkModeEnabled
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                '${widget.articles[index].view} views',
+                                style: TextStyle(
+                                    color: appThemeState.isDarkModeEnabled
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            ],
+                          ),
+                          Text('by ${widget.articles[index].author}',
+                              maxLines: 2,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                      color: appThemeState.isDarkModeEnabled
+                                          ? Colors.white
+                                          : Colors.black)),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -151,7 +166,7 @@ class __BreakingNewsState extends ConsumerState<_BreakingNews> {
   }
 }
 
-class _NewsOfTheDay extends StatelessWidget {
+class _NewsOfTheDay extends ConsumerWidget {
   const _NewsOfTheDay({
     required this.article,
   });
@@ -159,14 +174,15 @@ class _NewsOfTheDay extends StatelessWidget {
   final Article article;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ImageContainer(
+      borderRadius: 0,
       height: MediaQuery.of(context).size.height * 0.45,
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
       imageUrl: article.imageUrl,
       child: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.fromLTRB(15, 20, 15, 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +205,16 @@ class _NewsOfTheDay extends StatelessWidget {
                   color: Colors.white),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  ArticleScreen.routeName,
+                  arguments: article,
+                );
+
+                ref.read(incrementViewProvider(article.id));
+                article.view += 1;
+              },
               style: TextButton.styleFrom(padding: EdgeInsets.zero),
               child: Row(
                 children: [
