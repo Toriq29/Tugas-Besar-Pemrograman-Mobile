@@ -2,11 +2,16 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tubes/data/firebase/firebase_articles_repository.dart';
+import 'package:tubes/domain/entities/article_model.dart';
 import 'package:tubes/domain/entities/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tubes/data/repositories/auth_repository.dart';
+import 'package:tubes/presentation/providers/article_provider.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -129,13 +134,46 @@ class FirebaseAuthRepository implements AuthRepository {
     final DocumentSnapshot documentSnapshot = await users.doc(user.uid).get();
     final userData = documentSnapshot.data() as Map<String, dynamic>;
 
-    
     return Userr(
       uid: user.uid,
       name: userData['name'],
       email: user.email,
       photoUrl: userData['photoUrl'],
     );
-    
   }
+
+  @override
+  Future<void> addToBookMark(String id) async {
+    User? user = _firebaseAuth.currentUser;
+    users.doc(user?.uid).collection("bookMark").add({"id_article": id});
+  }
+
+  // @override
+  // Stream<List<Article>> printBookMark() {
+  //   User? user = _firebaseAuth.currentUser;
+
+  //   final stream = users
+  //       .doc(user?.uid)
+  //       .collection('bookMark')
+  //       .snapshots()
+  //       .asyncMap<List<Article>>((querySnapshot) async {
+  //     List<Article> bookMarkArticle = [];
+  //     for (var doc in querySnapshot.docs) {
+  //       var data = doc.data() as Map<String, dynamic>;
+  //       String id = data["id_article"];
+
+  //       var articles = await articleProvider
+  //           .future; // Assuming articleProvider is a FutureProvider
+
+  //       for (var article in articles) {
+  //         if (id == article.id) {
+  //           bookMarkArticle.add(article);
+  //         }
+  //       }
+  //     }
+  //     return bookMarkArticle;
+  //   });
+
+  //   return stream;
+  // }
 }

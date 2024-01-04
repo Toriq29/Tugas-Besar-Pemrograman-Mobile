@@ -113,6 +113,7 @@ class __BreakingNewsState extends ConsumerState<_BreakingNews> {
                           Text(
                             widget.articles[index].title,
                             maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!

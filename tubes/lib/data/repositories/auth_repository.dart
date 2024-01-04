@@ -1,3 +1,4 @@
+import 'package:tubes/domain/entities/article_model.dart';
 import 'package:tubes/domain/entities/user.dart';
 
 abstract class AuthRepository {
@@ -6,4 +7,6 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<Userr?> updateName(String newName);
   Future<Userr?> uploadProfilePicture();
+  Future<void> addToBookMark(String id);
+  // Stream<List<Article>> printBookMark();
 }

@@ -103,7 +103,7 @@ class __CategoryNewsState extends ConsumerState<_CategoryNews> {
                                   children: [
                                     ImageContainer(
                                         width: 80,
-                                        height: 80,
+                                        height: 100,
                                         borderRadius: 5,
                                         margin: const EdgeInsets.all(10),
                                         imageUrl: articles[index].imageUrl),
@@ -116,8 +116,6 @@ class __CategoryNewsState extends ConsumerState<_CategoryNews> {
                                         children: [
                                           Text(
                                             articles[index].title,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.clip,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyLarge!
