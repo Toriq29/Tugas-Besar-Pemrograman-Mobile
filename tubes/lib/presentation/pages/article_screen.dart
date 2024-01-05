@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/domain/entities/article_model.dart';
-import 'package:tubes/presentation/providers/book_mark_provider.dart';
+import 'package:tubes/presentation/providers/login_register_provider.dart';
 import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
 
@@ -35,7 +35,7 @@ class ArticleScreen extends ConsumerWidget {
               ),
             ),
             ElevatedButton(onPressed: () {
-              ref.read(bookMarkProvider(article.id));
+              ref.read(loginRegisterProvider.notifier).addBookMark(article.id);
             }, child: Text("BookMark")),
             Container(
               padding: const EdgeInsets.fromLTRB(20, 1, 20, 1),

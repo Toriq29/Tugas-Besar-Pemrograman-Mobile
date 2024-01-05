@@ -2,16 +2,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tubes/data/firebase/firebase_articles_repository.dart';
 import 'package:tubes/domain/entities/article_model.dart';
 import 'package:tubes/domain/entities/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tubes/data/repositories/auth_repository.dart';
-import 'package:tubes/presentation/providers/article_provider.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -30,6 +26,21 @@ class FirebaseAuthRepository implements AuthRepository {
       final DocumentSnapshot documentSnapshot =
           await users.doc(userCredential.user?.uid).get();
 
+      final QuerySnapshot<Map<String, dynamic>> documents = await users
+          .doc(userCredential.user?.uid)
+          .collection("bookMark")
+          .get();
+      List<String> bookMarks = [];
+      try {
+        for (var document in documents.docs) {
+          bookMarks.add(document.data()['id_article']);
+        }
+      } catch (e) {
+        print(e);
+      }
+
+      print(bookMarks);
+
       if (userCredential.user != null) {
         final userData = documentSnapshot.data() as Map<String, dynamic>;
 
@@ -38,6 +49,7 @@ class FirebaseAuthRepository implements AuthRepository {
           email: userCredential.user?.email,
           name: userData['name'],
           photoUrl: userData['photoUrl'],
+          bookMark: bookMarks,
         );
       } else {
         return null;
@@ -73,6 +85,7 @@ class FirebaseAuthRepository implements AuthRepository {
         name: name,
         email: email,
         photoUrl: "",
+        bookMark: [],
       );
     } catch (e) {
       print("Error signing in: $e");
@@ -81,23 +94,19 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<Userr?> updateName(String newName) async {
+  Future<Userr?> updateName(String newName, Userr user) async {
     try {
-      User? user = _firebaseAuth.currentUser;
-
-      final DocumentSnapshot documentSnapshot =
-          await users.doc(user?.uid).get();
+      final DocumentSnapshot documentSnapshot = await users.doc(user.uid).get();
       final userData = documentSnapshot.data() as Map<String, dynamic>;
 
-      await users
-          .doc(user?.uid)
-          .set({"name": newName, "photoUrl": userData['photoUrl']});
+      await users.doc(user.uid).update({"name": newName});
 
       return Userr(
-        uid: user?.uid,
+        uid: user.uid,
         name: newName,
-        email: user?.email,
+        email: user.email,
         photoUrl: userData['photoUrl'],
+        bookMark: user.bookMark,
       );
     } catch (error) {
       print('Error updating email: $error');
@@ -106,7 +115,7 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<Userr?> uploadProfilePicture() async {
+  Future<Userr?> uploadProfilePicture(Userr user) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
 
@@ -119,11 +128,9 @@ class FirebaseAuthRepository implements AuthRepository {
       maxWidth: 512,
     );
 
-    User? user = _firebaseAuth.currentUser;
-
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference referenceDirImage = referenceRoot.child('profile');
-    Reference referenceImageToUpload = referenceDirImage.child(user!.uid);
+    Reference referenceImageToUpload = referenceDirImage.child(user.uid!);
 
     await referenceImageToUpload.putFile(File(croppedFile!.path));
 
@@ -139,41 +146,40 @@ class FirebaseAuthRepository implements AuthRepository {
       name: userData['name'],
       email: user.email,
       photoUrl: userData['photoUrl'],
+      bookMark: user.bookMark,
     );
   }
 
   @override
-  Future<void> addToBookMark(String id) async {
-    User? user = _firebaseAuth.currentUser;
-    users.doc(user?.uid).collection("bookMark").add({"id_article": id});
+  Future<Userr?> addToBookMark(String id, Userr user) async {
+    try {
+      await users.doc(user.uid).collection("bookMark").add({"id_article": id});
+
+      user.bookMark.add(id);
+
+      return Userr(
+        uid: user.uid,
+        name: user.name,
+        email: user.email,
+        photoUrl: user.photoUrl,
+        bookMark: user.bookMark,
+      );
+    } catch (e) {
+      print(e);
+    }
+    return null;
   }
 
-  // @override
-  // Stream<List<Article>> printBookMark() {
-  //   User? user = _firebaseAuth.currentUser;
-
-  //   final stream = users
-  //       .doc(user?.uid)
-  //       .collection('bookMark')
-  //       .snapshots()
-  //       .asyncMap<List<Article>>((querySnapshot) async {
-  //     List<Article> bookMarkArticle = [];
-  //     for (var doc in querySnapshot.docs) {
-  //       var data = doc.data() as Map<String, dynamic>;
-  //       String id = data["id_article"];
-
-  //       var articles = await articleProvider
-  //           .future; // Assuming articleProvider is a FutureProvider
-
-  //       for (var article in articles) {
-  //         if (id == article.id) {
-  //           bookMarkArticle.add(article);
-  //         }
-  //       }
-  //     }
-  //     return bookMarkArticle;
-  //   });
-
-  //   return stream;
-  // }
+  @override
+  List<Article> getBookMarkStream(listArticle, Userr user) {
+    List<Article> bookMarkArticle = [];
+    for (var bookMarkId in user.bookMark) {
+      for (var article in listArticle) {
+        if (bookMarkId == article.id) {
+          bookMarkArticle.add(article);
+        }
+      }
+    }
+    return bookMarkArticle;
+  }
 }

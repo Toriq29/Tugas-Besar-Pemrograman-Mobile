@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/presentation/pages/bookmark_screen.dart';
 import 'package:tubes/presentation/pages/edit_profile.dart';
 import 'package:tubes/presentation/pages/login_screen.dart';
+import 'package:tubes/presentation/providers/article_provider.dart';
 import 'package:tubes/presentation/providers/login_register_provider.dart';
 import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
@@ -39,16 +40,25 @@ class ProfileScreen extends ConsumerWidget {
               Column(
                 children: [
                   Text(ref.read(loginRegisterProvider).user!.name,
-                      style: TextStyle(fontSize: 20, color:appThemeState.isDarkModeEnabled ? Colors.white : Colors.black )),
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: appThemeState.isDarkModeEnabled
+                              ? Colors.white
+                              : Colors.black)),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, EditProfileScreen.routeName);
                     },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: appThemeState.isDarkModeEnabled
+                            ? Colors.white
+                            : Colors.black),
                     child: Text(
                       "Update Profile",
-                      style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.black : Colors.white),
+                      style: TextStyle(
+                          color: appThemeState.isDarkModeEnabled
+                              ? Colors.black
+                              : Colors.white),
                     ),
                   )
                 ],
@@ -64,12 +74,18 @@ class ProfileScreen extends ConsumerWidget {
                     ref.read(loginRegisterProvider.notifier).signOut();
                     Navigator.pushNamed(context, LoginScreen.routeName);
                   },
-                  child:  Row(
+                  child: Row(
                     children: [
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.dark_mode)),
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.dark_mode)),
                       const SizedBox(width: 5),
-                      Text("Dark Mode",
-                      style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),)
+                      Text(
+                        "Dark Mode",
+                        style: TextStyle(
+                            color: appThemeState.isDarkModeEnabled
+                                ? Colors.white
+                                : Colors.black),
+                      )
                     ],
                   ),
                 ),
@@ -91,15 +107,31 @@ class ProfileScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 3),
                 child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, BookMarkScreen.routeName);
+                  onTap: () async {
+                    ref.watch(articleProvider).when(
+                          data: (articles) {
+                            Navigator.pushNamed(
+                                context, BookMarkScreen.routeName,
+                                arguments: articles);
+                          },
+                          error: (error, stackTrace) => Text('Error: $error'),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
                   },
-                  child:  Row(
+                  child: Row(
                     children: [
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.bookmark)),
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.bookmark)),
                       const SizedBox(width: 5),
-                      Text("Book Mark",
-                      style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),)
+                      Text(
+                        "Book Mark",
+                        style: TextStyle(
+                            color: appThemeState.isDarkModeEnabled
+                                ? Colors.white
+                                : Colors.black),
+                      )
                     ],
                   ),
                 ),
@@ -119,9 +151,16 @@ class ProfileScreen extends ConsumerWidget {
                   },
                   child: Row(
                     children: [
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.logout)),
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.logout)),
                       const SizedBox(width: 5),
-                      Text("Log Out", style: TextStyle(color: appThemeState.isDarkModeEnabled ? Colors.white : Colors.black),)
+                      Text(
+                        "Log Out",
+                        style: TextStyle(
+                            color: appThemeState.isDarkModeEnabled
+                                ? Colors.white
+                                : Colors.black),
+                      )
                     ],
                   ),
                 ),

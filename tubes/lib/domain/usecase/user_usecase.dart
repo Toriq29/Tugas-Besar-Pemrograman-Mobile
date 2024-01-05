@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/data/firebase/firebase_auth_repository.dart';
 import 'package:tubes/data/repositories/auth_repository.dart';
+import 'package:tubes/domain/entities/article_model.dart';
 import 'package:tubes/domain/entities/user.dart';
 
 class AuthState {
@@ -34,12 +35,23 @@ class LoginAndRegister extends StateNotifier<AuthState> {
   }
 
   Future<void> updateName(String newName) async {
-    final Userr? user = await _authRepository.updateName(newName);
+    final Userr? user = await _authRepository.updateName(newName, state.user!);
     state = AuthState(user: user);
   }
 
   Future<void> uploadProfile() async {
-    final Userr? user = await _authRepository.uploadProfilePicture();
+    final Userr? user = await _authRepository.uploadProfilePicture(state.user!);
+    state = AuthState(user: user);
+  }
+
+  List<Article> getBookMark(List<Article> listArticle)  {
+    final List<Article> articleList =  _authRepository.getBookMarkStream(listArticle, state.user!);
+    return articleList;
+  }
+
+
+  Future<void> addBookMark(String id) async {
+    final Userr? user = await _authRepository.addToBookMark(id, state.user!);
     state = AuthState(user: user);
   }
 }

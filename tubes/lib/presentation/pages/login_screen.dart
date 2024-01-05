@@ -100,6 +100,8 @@ class LoginScreen extends ConsumerWidget {
                         ));
                       }
                     }
+                    emailController.text = "";
+                    passwordController.text = "";
                   },
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 40),
