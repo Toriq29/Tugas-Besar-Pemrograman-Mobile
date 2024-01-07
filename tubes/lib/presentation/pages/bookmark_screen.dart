@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/domain/entities/article_model.dart';
-import 'package:tubes/presentation/pages/article_screen.dart';
+import 'package:tubes/presentation/pages/article_screen_bookmark.dart';
 import 'package:tubes/presentation/pages/profle_screen.dart';
 import 'package:tubes/presentation/providers/article_provider.dart';
 import 'package:tubes/presentation/providers/login_register_provider.dart';
@@ -32,10 +32,12 @@ class _BookMarkScreenState extends ConsumerState<BookMarkScreen> {
         backgroundColor: Colors.white,
         leading: IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, ProfileScreen.routeName);
+              Navigator.pushNamed(context, ProfileScreen.routeName).then((value) {setState(() {
+                
+              });});
             },
             icon: const Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios_new,
               color: Colors.black,
             )),
       ),
@@ -47,7 +49,7 @@ class _BookMarkScreenState extends ConsumerState<BookMarkScreen> {
             onTap: () async {
               Navigator.pushNamed(
                 context,
-                ArticleScreen.routeName,
+                ArticleBookMarkScreen.routeName,
                 arguments: bookmark[index],
               );
       

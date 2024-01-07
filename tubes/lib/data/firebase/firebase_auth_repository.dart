@@ -171,6 +171,31 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<Userr?> removeToBookMark(String id, Userr user) async {
+    try {
+    final collectionReference = users.doc(user.uid).collection("bookMark");
+
+    final querySnapshot = await collectionReference.where('id_article', isEqualTo: id).get();
+
+    final documentReference = querySnapshot.docs.first.reference;
+    await documentReference.delete();
+
+    user.bookMark.remove(id);
+
+      return Userr(
+        uid: user.uid,
+        name: user.name,
+        email: user.email,
+        photoUrl: user.photoUrl,
+        bookMark: user.bookMark,
+      );
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  @override
   List<Article> getBookMarkStream(listArticle, Userr user) {
     List<Article> bookMarkArticle = [];
     for (var bookMarkId in user.bookMark) {
@@ -182,4 +207,20 @@ class FirebaseAuthRepository implements AuthRepository {
     }
     return bookMarkArticle;
   }
+
+  @override
+  bool checkingBookmark(String idArticle, Userr user) {
+    bool checking = false;
+
+    for (var idBookmark in user.bookMark) {
+      if (idBookmark == idArticle) {
+        checking = true;
+        break;
+      }
+    }
+
+    return checking;
+  }
+  
+  
 }

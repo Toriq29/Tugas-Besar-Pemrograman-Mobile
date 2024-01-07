@@ -54,4 +54,14 @@ class LoginAndRegister extends StateNotifier<AuthState> {
     final Userr? user = await _authRepository.addToBookMark(id, state.user!);
     state = AuthState(user: user);
   }
+
+  Future<void> removeBookMark(String id) async {
+    final Userr? user = await _authRepository.removeToBookMark(id, state.user!);
+    state = AuthState(user: user);
+  }
+
+  bool checkBookmark(String idArticle){
+    bool ckeck = _authRepository.checkingBookmark(idArticle, state.user!);
+    return ckeck;
+  }
 }

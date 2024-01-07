@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tubes/domain/entities/article_model.dart';
+import 'package:tubes/presentation/pages/bookmark_screen.dart';
+import 'package:tubes/presentation/providers/article_provider.dart';
 import 'package:tubes/presentation/providers/login_register_provider.dart';
 import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
 
 
-class ArticleScreen extends ConsumerStatefulWidget {
-  const ArticleScreen({super.key});
+class ArticleBookMarkScreen extends ConsumerStatefulWidget {
+  const ArticleBookMarkScreen({super.key});
 
-  static const routeName = '/article';
+  static const routeName = '/article_bookmark';
   @override
-  ConsumerState<ArticleScreen> createState() => _ArticleScreenState();
+  ConsumerState<ArticleBookMarkScreen> createState() => _ArticleScreenState();
 }
 
-class _ArticleScreenState extends ConsumerState<ArticleScreen> {
+class _ArticleScreenState extends ConsumerState<ArticleBookMarkScreen> {
   @override
   Widget build(BuildContext context) {
     final article = ModalRoute.of(context)!.settings.arguments as Article;
@@ -112,7 +114,17 @@ class _NewsHeadline extends ConsumerWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: IconButton(onPressed: (){
-              Navigator.pop(context);
+              ref.watch(articleProvider).when(
+                          data: (articles) {
+                            Navigator.pushNamed(
+                                context, BookMarkScreen.routeName,
+                                arguments: articles);
+                          },
+                          error: (error, stackTrace) => Text('Error: $error'),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
             }, icon: Icon(Icons.arrow_back_ios_new)),
           ),
       ],

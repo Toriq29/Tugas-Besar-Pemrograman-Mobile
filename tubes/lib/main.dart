@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tubes/domain/usecase/app_theme.dart';
 import 'package:tubes/firebase_options.dart';
+import 'package:tubes/presentation/pages/article_screen_bookmark.dart';
 import 'package:tubes/presentation/pages/bookmark_screen.dart';
 import 'package:tubes/presentation/pages/edit_profile.dart';
 import 'package:tubes/presentation/pages/login_screen.dart';
@@ -44,6 +45,7 @@ class MyApp extends HookConsumerWidget {
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         EditProfileScreen.routeName: (context) => EditProfileScreen(),
         BookMarkScreen.routeName: (context) => const BookMarkScreen(),
+        ArticleBookMarkScreen.routeName: (context) => const ArticleBookMarkScreen(),
       }
     );
   }
