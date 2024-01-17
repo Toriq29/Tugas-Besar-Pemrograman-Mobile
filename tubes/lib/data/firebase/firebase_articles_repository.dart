@@ -14,12 +14,20 @@ class FirebaseArticlesRepository implements ArticlesRepository{
     List<Article> listArticlesSwap = [];
     try {
       QuerySnapshot querySnapshot = await articles.get();
-      for (var doc in querySnapshot.docs) { 
-        listArticles.add(Article(id: doc.id, title: doc['title'], body: doc['body'], author: doc['author'], category: doc['category'], imageUrl: doc['imageUrl'], view: doc['view']));
+      for (var doc in querySnapshot.docs) {
+
+        QuerySnapshot bodiesSnapshots  = await doc.reference.collection("Bodies").get();
+        List<String> bodies = bodiesSnapshots.docs.map((bodyDoc) => (bodyDoc.data() as Map<String, dynamic>)['body'] as String).toList();
+        listArticles.add(Article(id: doc.id, title: doc['title'], body: bodies, author: doc['author'], category: doc['category'], imageUrl: doc['imageUrl'], view: doc['view']));
+
+
       }
 
       for (var i = listArticles.length-1 ; i >= 0  ; i--) {
-        listArticlesSwap.add(listArticles[i]);
+        if (listArticles[i].category == "Nasional" ||listArticles[i].category == "Internasional" ||listArticles[i].category == "Ekonomi" ||listArticles[i].category == "Olahraga" ||listArticles[i].category == "Otomotif") {
+          listArticlesSwap.add(listArticles[i]);
+          
+        }
       }
       
     } catch (e) {

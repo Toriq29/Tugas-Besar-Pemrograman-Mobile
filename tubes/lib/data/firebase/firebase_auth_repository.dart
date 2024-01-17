@@ -39,7 +39,6 @@ class FirebaseAuthRepository implements AuthRepository {
         print(e);
       }
 
-      print(bookMarks);
 
       if (userCredential.user != null) {
         final userData = documentSnapshot.data() as Map<String, dynamic>;
@@ -198,6 +197,7 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   List<Article> getBookMarkStream(listArticle, Userr user) {
     List<Article> bookMarkArticle = [];
+    List<Article> bookMarkArticleSwap = [];
     for (var bookMarkId in user.bookMark) {
       for (var article in listArticle) {
         if (bookMarkId == article.id) {
@@ -205,7 +205,12 @@ class FirebaseAuthRepository implements AuthRepository {
         }
       }
     }
-    return bookMarkArticle;
+
+    for (var i = bookMarkArticle.length-1; i > 0; i--) {
+      bookMarkArticleSwap.add(bookMarkArticle[i]);
+      
+    }
+    return bookMarkArticleSwap;
   }
 
   @override

@@ -59,12 +59,19 @@ class _ArticleScreenState extends ConsumerState<ArticleBookMarkScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    article.body,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: appThemeState.isDarkModeEnabled
-                            ? Colors.white
-                            : Colors.black),
+                  Column(
+                    children: article.body.map((bodyText) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Text(
+                          bodyText,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: appThemeState.isDarkModeEnabled
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                      );
+                    }).toList(),
                   )
                 ],
               ),
@@ -136,6 +143,8 @@ class __NewsHeadlineState extends ConsumerState<_NewsHeadline> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: IconButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
                       onPressed: () async {
                          await ref.watch(loginRegisterProvider.notifier).removeBookMark(widget.article.id);
                          setState(() {
@@ -154,6 +163,8 @@ class __NewsHeadlineState extends ConsumerState<_NewsHeadline> {
                     borderRadius: BorderRadius.circular(8)
                   ),
                   child: IconButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
                       onPressed: () async {
                         await ref
                             .watch(loginRegisterProvider.notifier).addBookMark(widget.article.id);

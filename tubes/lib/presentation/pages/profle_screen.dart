@@ -147,6 +147,9 @@ class ProfileScreen extends ConsumerWidget {
                 InkWell(
                   onTap: () {
                     ref.read(loginRegisterProvider.notifier).signOut();
+                    if (appThemeState.isDarkModeEnabled == true) {
+                      appThemeState.setLightTheme();
+                    }
                     Navigator.pushNamed(context, LoginScreen.routeName);
                   },
                   child: Row(

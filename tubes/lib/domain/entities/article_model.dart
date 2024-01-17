@@ -3,7 +3,7 @@
 class Article{
   final String id;
   final String title;
-  final String body;
+  final List<String> body;
   final String author;
   final String category;
   final String imageUrl;

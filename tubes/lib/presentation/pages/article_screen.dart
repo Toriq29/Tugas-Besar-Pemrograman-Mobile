@@ -56,12 +56,19 @@ class _ArticleScreenState extends ConsumerState<ArticleScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    article.body,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: appThemeState.isDarkModeEnabled
-                            ? Colors.white
-                            : Colors.black),
+                  Column(
+                    children: article.body.map((bodyText) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Text(
+                          bodyText,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: appThemeState.isDarkModeEnabled
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                      );
+                    }).toList(),
                   )
                 ],
               ),
@@ -85,8 +92,9 @@ class _NewsHeadline extends ConsumerStatefulWidget {
 class __NewsHeadlineState extends ConsumerState<_NewsHeadline> {
   @override
   Widget build(BuildContext context) {
-    var checkBookmark =
-        ref.watch(loginRegisterProvider.notifier).checkBookmark(widget.article.id);
+    var checkBookmark = ref
+        .watch(loginRegisterProvider.notifier)
+        .checkBookmark(widget.article.id);
     return Stack(
       children: [
         ImageContainer(
@@ -99,17 +107,20 @@ class __NewsHeadlineState extends ConsumerState<_NewsHeadline> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: Padding(
-            padding: const EdgeInsets.only(left: 5,),
+            padding: const EdgeInsets.only(
+              left: 5,
+            ),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(8)
-              ),
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(8)),
               child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back_ios_new,)),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                  )),
             ),
           ),
           actions: [
@@ -122,13 +133,17 @@ class __NewsHeadlineState extends ConsumerState<_NewsHeadline> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: IconButton(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
                       onPressed: () async {
-                         await ref.watch(loginRegisterProvider.notifier).removeBookMark(widget.article.id);
-                         setState(() {
-                           
-                         });
+                        await ref
+                            .watch(loginRegisterProvider.notifier)
+                            .removeBookMark(widget.article.id);
+                        setState(() {});
                       },
-                      icon: const Icon(Icons.bookmark_added_rounded,)),
+                      icon: const Icon(
+                        Icons.bookmark_added_rounded,
+                      )),
                 ),
               ),
             if (checkBookmark == false)
@@ -136,18 +151,20 @@ class __NewsHeadlineState extends ConsumerState<_NewsHeadline> {
                 padding: const EdgeInsets.only(right: 15),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.circular(8)
-                  ),
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(8)),
                   child: IconButton(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
                       onPressed: () async {
                         await ref
-                            .watch(loginRegisterProvider.notifier).addBookMark(widget.article.id);
-                        setState(() {
-                          
-                        });
+                            .watch(loginRegisterProvider.notifier)
+                            .addBookMark(widget.article.id);
+                        setState(() {});
                       },
-                      icon: const Icon(Icons.bookmark_add_outlined,)),
+                      icon: const Icon(
+                        Icons.bookmark_add_outlined,
+                      )),
                 ),
               ),
           ],

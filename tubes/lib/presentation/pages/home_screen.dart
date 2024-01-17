@@ -5,7 +5,6 @@ import 'package:tubes/presentation/pages/article_screen.dart';
 import 'package:tubes/presentation/providers/article_provider.dart';
 import 'package:tubes/presentation/providers/theme_provider.dart';
 import 'package:tubes/presentation/widgets/bottom_nav_bar.dart';
-import 'package:tubes/presentation/widgets/custom_tag.dart';
 import 'package:tubes/presentation/widgets/image_container.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -183,27 +182,33 @@ class _NewsOfTheDay extends ConsumerWidget {
       padding: const EdgeInsets.all(20.0),
       imageUrl: article.imageUrl,
       child: Container(
-        margin: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+        margin: const EdgeInsets.fromLTRB(8, 20, 15, 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTag(backgroundColor: Colors.grey.withAlpha(150), children: [
-              Text(
-                "Berita terbaik hari ini",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Colors.white),
+            Container(
+              decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(8)),
+              padding: EdgeInsets.fromLTRB(8, 5, 5, 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Berita terbaik hari ini",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: Colors.white),
+                  ),
+                  Text(
+                    article.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: Colors.white),
+                  ),
+                ],
               ),
-            ]),
-            const SizedBox(height: 10),
-            Text(
-              article.title,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  height: 1.25,
-                  color: Colors.white),
             ),
             TextButton(
               onPressed: () {
@@ -217,23 +222,35 @@ class _NewsOfTheDay extends ConsumerWidget {
                 article.view += 1;
               },
               style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Row(
-                children: [
-                  Text(
-                    "Baca selengkapnya",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Icon(
-                    Icons.arrow_right_alt,
-                    color: Colors.white,
-                  )
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.black26,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Baca selengkapnya",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.white),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Icon(
+                      Icons.arrow_right_alt,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
